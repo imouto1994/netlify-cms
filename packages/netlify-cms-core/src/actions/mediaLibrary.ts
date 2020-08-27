@@ -305,6 +305,18 @@ export function persistMedia(file: File, opts: MediaOptions = {}) {
   };
 }
 
+export function importMedia(fileCount: number, opts: MediaOptions = {}, toTableData: any) {
+  const { field } = opts;
+
+  return async (dispatch: ThunkDispatch<State, {}, AnyAction>, getState: () => State) => {
+    const state = getState();
+    const files: MediaFile[] = selectMediaFiles(state, field);
+    const importedFiles = files.filter((_, index: number) => index < fileCount);
+    const importedPaths = toTableData(importedFiles).map((file: any) => file.path);
+    dispatch(insertMedia(importedPaths, field));
+  };
+}
+
 export function deleteMedia(file: MediaFile, opts: MediaOptions = {}) {
   const { privateUpload } = opts;
   return async (dispatch: ThunkDispatch<State, {}, AnyAction>, getState: () => State) => {

@@ -3,7 +3,13 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import MediaLibrarySearch from './MediaLibrarySearch';
 import MediaLibraryHeader from './MediaLibraryHeader';
-import { UploadButton, DeleteButton, DownloadButton, InsertButton } from './MediaLibraryButtons';
+import {
+  ImportButton,
+  UploadButton,
+  DeleteButton,
+  DownloadButton,
+  InsertButton,
+} from './MediaLibraryButtons';
 
 const LibraryTop = styled.div`
   position: relative;
@@ -27,6 +33,7 @@ const MediaLibraryTop = ({
   forImage,
   onDownload,
   onUpload,
+  onImport,
   query,
   onSearchChange,
   onSearchKeyDown,
@@ -77,6 +84,12 @@ const MediaLibraryTop = ({
             label={uploadButtonLabel}
             imagesOnly={forImage}
             onChange={onUpload}
+            disabled={!uploadEnabled}
+          />
+          <ImportButton
+            label="Import"
+            imagesOnly={forImage}
+            onChange={onImport}
             disabled={!uploadEnabled}
           />
         </ButtonsContainer>

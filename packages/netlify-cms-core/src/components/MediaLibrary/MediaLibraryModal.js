@@ -82,6 +82,7 @@ const MediaLibraryModal = ({
   handleSearchChange,
   handleSearchKeyDown,
   handlePersist,
+  handleImport,
   handleDelete,
   handleInsert,
   handleDownload,
@@ -118,6 +119,7 @@ const MediaLibraryModal = ({
         forImage={forImage}
         onDownload={handleDownload}
         onUpload={handlePersist}
+        onImport={handleImport}
         query={query}
         onSearchChange={handleSearchChange}
         onSearchKeyDown={handleSearchKeyDown}
@@ -185,6 +187,7 @@ MediaLibraryModal.propTypes = {
   handleSearchChange: PropTypes.func.isRequired,
   handleSearchKeyDown: PropTypes.func.isRequired,
   handlePersist: PropTypes.func.isRequired,
+  handleImport: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
   handleInsert: PropTypes.func.isRequired,
   setScrollContainerRef: PropTypes.func.isRequired,

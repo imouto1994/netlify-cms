@@ -9,6 +9,7 @@ import { fileExtension } from 'netlify-cms-lib-util';
 import {
   loadMedia as loadMediaAction,
   persistMedia as persistMediaAction,
+  importMedia as importMediaAction,
   deleteMedia as deleteMediaAction,
   insertMedia as insertMediaAction,
   loadMediaDisplayURL as loadMediaDisplayURLAction,
@@ -163,22 +164,52 @@ class MediaLibrary extends React.Component {
     const { persistMedia, privateUpload, config, t, field } = this.props;
     const { files: fileList } = event.dataTransfer || event.target;
     const files = [...fileList];
-    const file = files[0];
     const maxFileSize = config.get('max_file_size');
 
-    if (maxFileSize && file.size > maxFileSize) {
-      window.alert(
-        t('mediaLibrary.mediaLibrary.fileTooLarge', {
-          size: Math.floor(maxFileSize / 1000),
-        }),
-      );
-    } else {
-      await persistMedia(file, { privateUpload, field });
-
-      this.setState({ selectedFile: this.props.files[0] });
-
-      this.scrollToTop();
+    for (const file of files) {
+      if (maxFileSize && file.size > maxFileSize) {
+        window.alert(
+          t('mediaLibrary.mediaLibrary.fileTooLarge', {
+            size: Math.floor(maxFileSize / 1000),
+          }),
+        );
+      } else {
+        await persistMedia(file, { privateUpload, field });
+        this.scrollToTop();
+      }
     }
+
+    event.target.value = null;
+  };
+
+  handleImport = async event => {
+    /**
+     * Stop the browser from automatically handling the file input click, and
+     * get the file for upload, and retain the synthetic event for access after
+     * the asynchronous persist operation.
+     */
+    event.persist();
+    event.stopPropagation();
+    event.preventDefault();
+    const { persistMedia, importMedia, privateUpload, config, t, field } = this.props;
+    const { files: fileList } = event.dataTransfer || event.target;
+    const files = [...fileList];
+    const maxFileSize = config.get('max_file_size');
+
+    for (const file of files) {
+      if (maxFileSize && file.size > maxFileSize) {
+        window.alert(
+          t('mediaLibrary.mediaLibrary.fileTooLarge', {
+            size: Math.floor(maxFileSize / 1000),
+          }),
+        );
+      } else {
+        await persistMedia(file, { privateUpload, field });
+        this.scrollToTop();
+      }
+    }
+    await importMedia(files.length, { field }, this.toTableData);
+    this.handleClose();
 
     event.target.value = null;
   };
@@ -330,6 +361,7 @@ class MediaLibrary extends React.Component {
         handleSearchChange={this.handleSearchChange}
         handleSearchKeyDown={this.handleSearchKeyDown}
         handlePersist={this.handlePersist}
+        handleImport={this.handleImport}
         handleDelete={this.handleDelete}
         handleInsert={this.handleInsert}
         handleDownload={this.handleDownload}
@@ -371,6 +403,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   loadMedia: loadMediaAction,
+  importMedia: importMediaAction,
   persistMedia: persistMediaAction,
   deleteMedia: deleteMediaAction,
   insertMedia: insertMediaAction,

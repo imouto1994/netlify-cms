@@ -1,7 +1,7 @@
 {
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "start": "run-s clean bootstrap build:esm develop",
+    "start": "NETLIFY_CMS_DEV_SERVER_PORT=3000 run-s clean bootstrap build:esm develop",
     "develop": "lerna run develop --parallel --ignore netlify-cms-proxy-server",
     "build": "run-s clean build:esm build:lerna",
     "build:lerna": "lerna run build",

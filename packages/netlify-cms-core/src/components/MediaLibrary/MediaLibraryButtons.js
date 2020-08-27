@@ -45,6 +45,33 @@ export const UploadButton = styled(FileUploadButton)`
   }
 `;
 
+export const ImportButton = styled(FileUploadButton)`
+  ${styles.button};
+  ${buttons.gray};
+  ${shadows.dropMain};
+  margin-bottom: 0;
+
+  span {
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  input {
+    height: 0.1px;
+    width: 0.1px;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: ${zIndex.zIndex0};
+    outline: none;
+  }
+`;
+
 export const DeleteButton = styled.button`
   ${styles.button};
   ${buttons.lightRed};

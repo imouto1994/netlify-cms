@@ -9,6 +9,7 @@ export const FileUploadButton = ({ label, imagesOnly, onChange, disabled, classN
       accept={imagesOnly ? 'image/*' : '*/*'}
       onChange={onChange}
       disabled={disabled}
+      multiple
     />
   </label>
 );
