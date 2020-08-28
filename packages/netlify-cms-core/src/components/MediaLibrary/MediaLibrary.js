@@ -194,6 +194,7 @@ class MediaLibrary extends React.Component {
     const { persistMedia, importMedia, privateUpload, config, t, field } = this.props;
     const { files: fileList } = event.dataTransfer || event.target;
     const files = [...fileList];
+    files.reverse();
     const maxFileSize = config.get('max_file_size');
 
     for (const file of files) {
